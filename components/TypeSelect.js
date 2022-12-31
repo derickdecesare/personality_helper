@@ -25,7 +25,7 @@ export default function TypeSelect({
       <select
         id="site"
         name="site"
-        className=" block w-half rounded-md border border-2 border-blue-500  py-2 pl-3 pr-10 text-base focus:border-blue-600 focus:ring-indigo-500 sm:text-sm"
+        className=" block w-half rounded-md border border-2 border-blue-500  py-3 pl-3 pr-10 text-base focus:border-blue-600 focus:ring-indigo-500 sm:text-sm"
         value={type}
         onChange={setTypeRefresh}
       >
