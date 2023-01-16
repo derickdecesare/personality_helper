@@ -28,10 +28,6 @@ export default function Chat() {
       user: "gpt",
       message: "How can I help you today? ",
     },
-    {
-      user: "Ashly",
-      message: "I want to use chatGpt today ",
-    },
   ]);
 
   //scroll to bottom when new message is added
