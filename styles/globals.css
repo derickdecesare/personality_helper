@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Target the scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Change the background color of the scrollbar */
+  ::-webkit-scrollbar-thumb {
+    background-color: #111827;
+  }

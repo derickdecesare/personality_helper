@@ -17,30 +17,36 @@ export default function TypeSelect({
   }
 
   return (
-    <div className=" flex flex-row justify-center">
+    <div className=" flex flex-col items-center mt-10">
       <label
         htmlFor="site"
-        className="block text-sm font-medium text-gray-900"
-      ></label>
+        className="block text-xl text-center text-white font-bold px-10"
+      >
+        Select Your Personality Type
+      </label>
       <select
         id="site"
         name="site"
-        className=" block w-half rounded-md border border-2 border-blue-500  py-3 pl-3 pr-10 text-base focus:border-blue-600 focus:ring-indigo-500 sm:text-sm"
+        className=" block w-1/2 rounded-md border border-2 border-blue-400 mt-2 py-3 pl-3 pr-10 text-white  text-base focus:border-blue-400 focus:ring-blue-300 bg-gray-900 sm:text-md"
         value={type}
         onChange={setTypeRefresh}
       >
-        <option>Derick</option>
-        <option>Ashly</option>
-        <option>Allen</option>
-        <option>Tucker</option>
-        <option>Carlos</option>
-        <option>Garrett</option>
-        <option>Taylor</option>
-        <option>Cal</option>
-        <option>Tony</option>
-        <option>Nick</option>
-        <option>Alec</option>
-        <option>Nicole</option>
+        <option>ISTJ</option>
+        <option>ISFJ</option>
+        <option>INFJ</option>
+        <option>INTJ</option>
+        <option>ISTP</option>
+        <option>INTP</option>
+        <option>ISFP</option>
+        <option>INFP</option>
+        <option>ESTP</option>
+        <option>ESFP</option>
+        <option>ENFP</option>
+        <option>ENTP</option>
+        <option>ESTJ</option>
+        <option>ESFJ</option>
+        <option>ENFJ</option>
+        <option>ENTJ</option>
       </select>
     </div>
   );
