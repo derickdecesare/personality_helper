@@ -158,7 +158,7 @@ const ChatMessage = ({ message, dummy }) => {
           message.user === "gpt" && "bg-gray-700 shadow-lg"
         }`}
       >
-        <div className="flex w-full lg:px-12 py-4  pl-2 pr-2 justify-between text-left items-start">
+        <div className="flex w-full lg:px-12 py-4  pl-2 pr-4 justify-between text-left items-start">
           <div className="flex gap-2 items-start">
             <div className={`rounded-full w-9 h-9 shrink-0 items-start`}>
               {message.user === "gpt" ? (
