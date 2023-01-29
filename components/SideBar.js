@@ -35,7 +35,7 @@ export default function SideBar({ type, setType }) {
   const [showHelperTip, setShowHelperTip] = useState(false);
 
   return (
-    <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
+    <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col border-r border-gray-900">
       {/* Sidebar component, swap this element with another sidebar if you like */}
       <div className="flex min-h-0 flex-1 flex-col justify-between bg-gray-800">
         <div className="flex flex-col overflow-y-auto  justify-end">

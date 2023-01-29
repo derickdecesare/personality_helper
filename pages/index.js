@@ -154,7 +154,7 @@ const ChatMessage = ({ message, dummy }) => {
   return (
     <>
       <div
-        className={`flex w-full mx-auto py-2  bg-gray-500 justify-center ${
+        className={`flex w-full mx-auto py-2 shadow-lg  bg-gray-500 justify-center ${
           message.user === "gpt" && "bg-gray-700"
         }`}
       >
