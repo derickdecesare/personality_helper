@@ -116,7 +116,7 @@ export default function Chat() {
           <BsPlusCircle onClick={clearChat} />
         </div>
 
-        <section className="flex-1 w-full overflow-y-auto lg:pl-64 bg-gray-500 pb-64">
+        <section className="flex-1 w-full overflow-y-auto  lg:pl-64 bg-gray-500 pb-64">
           <div className="text-left w-full">
             {chatLog.map((message, index) => (
               <ChatMessage message={message} key={index} dummy={dummy} />
@@ -154,21 +154,21 @@ const ChatMessage = ({ message, dummy }) => {
   return (
     <>
       <div
-        className={`flex w-full mx-auto py-3  bg-gray-500 justify-center ${
+        className={`flex w-full mx-auto py-2  bg-gray-500 justify-center ${
           message.user === "gpt" && "bg-gray-700"
         }`}
       >
         <div className="flex w-full lg:px-12 py-4  pl-4 pr-12  gap-4 justify-between text-left items-start">
           <div className="flex gap-4 items-start">
-            <div className={`rounded-full w-11 h-11 shrink-0 items-start`}>
+            <div className={`rounded-full w-9 h-9 shrink-0 items-start`}>
               {message.user === "gpt" ? (
                 <img
-                  className="inline-block h-11 w-11 rounded-full shadow-md"
+                  className="inline-block h-9 w-9 rounded-full shadow-md"
                   src="/personalitycoach.svg"
                   alt="Your Company"
                 />
               ) : (
-                <div className=" h-11 w-11 rounded-full shadow-md bg-gray-800 flex items-center justify-center">
+                <div className=" h-9 w-9 rounded-full shadow-md bg-gray-800 flex items-center justify-center">
                   <SiSuperuser className="text-2xl text-amber-100 ml-1" />
                 </div>
                 // <img
@@ -178,7 +178,7 @@ const ChatMessage = ({ message, dummy }) => {
                 // />
               )}
             </div>
-            <div className="text-xl text-left leading-loose text-gray-100">
+            <div className="text-lg text-left leading-loose text-gray-100">
               {message.message}
             </div>
           </div>
