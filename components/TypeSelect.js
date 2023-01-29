@@ -1,33 +1,24 @@
 import React from "react";
 
-export default function TypeSelect({
-  type,
-  setType,
-  setChatHistory,
-  setMessage,
-  setResponse,
-}) {
+export default function TypeSelect({ type, setType }) {
   console.log(type);
 
   function setTypeRefresh(e) {
     setType(e.target.value);
-    setChatHistory("");
-    setMessage("");
-    setResponse("");
   }
 
   return (
     <div className=" flex flex-col items-center mt-10">
       <label
         htmlFor="site"
-        className="block text-xl text-center text-white font-bold px-10"
+        className="block text-xl text-center text-white font-bold px-10 pointer-events-none "
       >
         Select Your Personality Type
       </label>
       <select
         id="site"
         name="site"
-        className=" block w-1/2 rounded-md border border-2 border-blue-400 mt-2 py-3 pl-3 pr-10 text-white  text-base focus:border-blue-400 focus:ring-blue-300 bg-gray-900 sm:text-md"
+        className="block w-1/2 rounded-md outline-none border-2 border-blue-400  mt-2 py-3 pl-3 pr-10 text-white  text-base  bg-gray-900 sm:text-md"
         value={type}
         onChange={setTypeRefresh}
       >

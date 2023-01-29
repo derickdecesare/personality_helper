@@ -14,6 +14,7 @@ import {
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { SiSuperuser } from "react-icons/si";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -30,7 +31,7 @@ const navigation = [
   },
 ];
 
-export default function SideBar() {
+export default function SideBar({ type, setType }) {
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -46,7 +47,7 @@ export default function SideBar() {
               Personality Coach
             </h2>
           </div>
-          <TypeSelect />
+          <TypeSelect type={type} setType={setType} />
         </div>
         <div className="flex flex-col">
           <nav className="mt-5 flex-1 mb-5 space-y-1 px-2">
@@ -79,17 +80,20 @@ export default function SideBar() {
             <a href="#" className="group block w-full flex-shrink-0">
               <div className="flex justify-between items-center">
                 <div>
-                  <img
+                  <div className=" h-10 w-10 rounded-full shadow-md bg-gray-800 flex items-center justify-center">
+                    <SiSuperuser className="text-xl ml-1 text-amber-100" />
+                  </div>
+                  {/* <img
                     className=" inline-block h-11 w-11 rounded-full"
                     src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                     alt=""
-                  />
+                  /> */}
                 </div>
                 <div className="ml-3">
-                  <p className="text-md font-medium text-white">Tom Cook</p>
-                  <p className="text-xs font-medium text-gray-300 group-hover:text-gray-200">
+                  <p className="text-md font-medium text-white">Anon User</p>
+                  {/* <p className="text-xs font-medium text-gray-300 group-hover:text-gray-200">
                     View profile
-                  </p>
+                  </p> */}
                 </div>
 
                 <div className="ml-3">
