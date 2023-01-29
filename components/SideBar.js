@@ -32,6 +32,8 @@ const navigation = [
 ];
 
 export default function SideBar({ type, setType }) {
+  const [showHelperTip, setShowHelperTip] = useState(false);
+
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-72 lg:flex-col">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -55,6 +57,12 @@ export default function SideBar({ type, setType }) {
               <a
                 key={item.name}
                 href={item.href}
+                onMouseEnter={() => {
+                  if (item.name === "Daily Accountability") {
+                    setShowHelperTip(true);
+                  }
+                }}
+                onMouseLeave={() => setShowHelperTip(false)}
                 className={classNames(
                   item.current
                     ? "bg-gray-900 text-white"
@@ -72,6 +80,11 @@ export default function SideBar({ type, setType }) {
                   aria-hidden="true"
                 />
                 {item.name}
+                {showHelperTip && (
+                  <div className="absolute bottom-10 left-15 m-4 p-2 bg-blue-100 text-blue-800 rounded-md">
+                    Coming Soon!
+                  </div>
+                )}
               </a>
             ))}
           </nav>
