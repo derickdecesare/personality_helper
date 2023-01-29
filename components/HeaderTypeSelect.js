@@ -12,7 +12,7 @@ export default function HeaderTypeSelect({ type, setType }) {
       <select
         id="site"
         name="site"
-        className="block w-1/2 rounded-md outline-none border-2 border-blue-400 ml-2 mr-16 my-1   text-white  text-base  bg-gray-900 sm:text-md"
+        className="block w-1/2 rounded-md outline-none border-2 border-blue-400 ml-2 mr-20 my-1   text-white  text-base  bg-gray-900 sm:text-md"
         value={type}
         onChange={setTypeRefresh}
       >
