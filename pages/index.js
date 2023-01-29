@@ -5,6 +5,7 @@ import { BiSend, BiRightArrow } from "react-icons/bi";
 import { BsPlusCircle, BsArrowRightShort } from "react-icons/bs";
 import { GiChargedArrow } from "react-icons/gi";
 import { SiSuperuser } from "react-icons/si";
+import Head from "next/head";
 
 import SideBar from "../components/SideBar";
 
@@ -74,42 +75,72 @@ export default function Chat() {
   }
 
   return (
-    <div className="flex bg-gray-500 text-white absolute top-0 bottom-0 left-0 right-0">
-      <SideBar type={type} setType={setType} />
-      <div className="absolute top-0 right-0 m-4 text-4xl  bg-gray-600 rounded-full hover:bg-gray-900  cursor-pointer text-black">
-        <BsPlusCircle onClick={clearChat} />
-      </div>
+    <>
+      <Head>
+        <title>AI Personality Coach</title>
+        <meta
+          name="A coach to help you based on your personality."
+          content="Created by Derick DeCesare"
+        />
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="msapplication-TileColor" content="#2932dd" />
+        <meta name="theme-color" content="#ffffff"></meta>
+      </Head>
+      <div className="flex bg-gray-500 text-white absolute top-0 bottom-0 left-0 right-0">
+        <SideBar type={type} setType={setType} />
+        <div className="absolute top-0 right-0 m-4 text-4xl  bg-gray-600 rounded-full hover:bg-gray-900  cursor-pointer text-black">
+          <BsPlusCircle onClick={clearChat} />
+        </div>
 
-      <section className="flex-1 w-full overflow-y-auto lg:pl-64 bg-gray-500 pb-32">
-        <div className="text-left w-full">
-          {chatLog.map((message, index) => (
-            <ChatMessage message={message} key={index} dummy={dummy} />
-          ))}
-        </div>
-        <div ref={dummy}></div>
-        <div className=" fixed bottom-0 lg:left-72 left-0 right-0  py-2 px-12 ">
-          <form onSubmit={handleSubmit}>
-            <div className="relative bg-gray-800 rounded-lg mb-6 mt-12 shadow">
-              <input
-                className="bg-gray-800 w-11/12  border-none rounded-lg outline-none shadow p-6 text-white text-xl"
-                rows="1"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-              ></input>
-              <div className="absolute top-0 right-0  h-full flex items-center p-2 text-4xl">
-                <BiSend
-                  className={`cursor-pointer p-1 hover:bg-gray-900 hover:rounded-md ${
-                    thinking &&
-                    "animate-spin-slow cursor-none hover:bg-gray-800 "
-                  }`}
-                  onClick={handleSubmit}
-                />
+        <section className="flex-1 w-full overflow-y-auto lg:pl-64 bg-gray-500 pb-32">
+          <div className="text-left w-full">
+            {chatLog.map((message, index) => (
+              <ChatMessage message={message} key={index} dummy={dummy} />
+            ))}
+          </div>
+          <div ref={dummy}></div>
+          <div className=" fixed bottom-0 lg:left-72 left-0 right-0  py-2 px-12 ">
+            <form onSubmit={handleSubmit}>
+              <div className="relative bg-gray-800 rounded-lg mb-6 mt-12 shadow">
+                <input
+                  className="bg-gray-800 w-11/12  border-none rounded-lg outline-none shadow p-6 text-white text-xl"
+                  rows="1"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                ></input>
+                <div className="absolute top-0 right-0  h-full flex items-center p-2 text-4xl">
+                  <BiSend
+                    className={`cursor-pointer p-1 hover:bg-gray-900 hover:rounded-md ${
+                      thinking &&
+                      "animate-spin-slow cursor-none hover:bg-gray-800 "
+                    }`}
+                    onClick={handleSubmit}
+                  />
+                </div>
               </div>
-            </div>
-          </form>
-        </div>
-      </section>
-    </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </>
   );
 }
 
