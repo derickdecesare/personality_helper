@@ -125,7 +125,7 @@ export default function Chat() {
           <div ref={dummy}></div>
           <div className=" fixed bottom-0 lg:left-72 left-0 right-0 pr-5 pl-3 ">
             <form onSubmit={handleSubmit}>
-              <div className="relative bg-gray-800 rounded-lg mb-8 mt-12 shadow">
+              <div className="relative bg-gray-800 rounded-lg mb-4 mt-12 shadow">
                 <input
                   className="bg-gray-800 w-11/12  border-none rounded-lg outline-none shadow p-4 text-white text-xl"
                   rows="1"
@@ -154,12 +154,12 @@ const ChatMessage = ({ message, dummy }) => {
   return (
     <>
       <div
-        className={`flex w-full mx-auto py-2 shadow-lg  bg-gray-500 justify-center ${
-          message.user === "gpt" && "bg-gray-700"
+        className={`flex w-full mx-auto py-2 shadow-lg bg-gray-500 justify-center ${
+          message.user === "gpt" && "bg-gray-700 shadow-lg"
         }`}
       >
-        <div className="flex w-full lg:px-12 py-4  pl-4 pr-12  gap-4 justify-between text-left items-start">
-          <div className="flex gap-4 items-start">
+        <div className="flex w-full lg:px-12 py-4  pl-2 pr-2 justify-between text-left items-start">
+          <div className="flex gap-2 items-start">
             <div className={`rounded-full w-9 h-9 shrink-0 items-start`}>
               {message.user === "gpt" ? (
                 <img
