@@ -61,6 +61,7 @@ export default function Chat() {
         { user: "User", message: `${input}` },
         { user: "gpt", message: "" },
       ]);
+      setLastMessageThinkingIndex(2);
     } else {
       chatLogNew = [...chatLog, { user: "User", message: `${input}` }];
       setThinkingChatLog([
