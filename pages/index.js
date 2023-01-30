@@ -217,7 +217,7 @@ export default function Chat() {
           </div>
           <div ref={dummy}></div>
 
-          <div className=" fixed bottom-0 lg:left-72 left-0 right-0 pr-5 pl-3 ">
+          <div className=" fixed bottom-0 lg:left-72 left-0 right-0 pr-5 pl-3 lg:pr-10 lg:pl-10 mx-auto max-w-screen-lg">
             <form onSubmit={handleSubmit}>
               <div className="relative bg-gray-800 rounded-lg mb-4 mt-12 shadow">
                 <input
@@ -269,7 +269,7 @@ const ChatMessage = ({
           message.user === "gpt" && "bg-gray-700 shadow-lg"
         }`}
       >
-        <div className="flex w-full lg:px-12 py-4  pl-2 pr-4 justify-between text-left items-start">
+        <div className="flex w-full lg:px-12 max-w-screen-lg  py-4  pl-2 pr-4 justify-between text-left items-start">
           <div className="flex lg:gap-4 gap-2 items-start">
             <div className={`rounded-full w-9 h-9 shrink-0 items-start`}>
               {message.user === "gpt" ? (
