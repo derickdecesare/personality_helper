@@ -2,7 +2,11 @@ import { Fragment, useState, useRef, useEffect } from "react";
 import HeaderTypeSelect from "../components/HeaderTypeSelect";
 import { AiFillAccountBook } from "react-icons/ai";
 import { BiSend, BiRightArrow } from "react-icons/bi";
-import { BsPlusCircle, BsArrowRightShort } from "react-icons/bs";
+import {
+  BsPlusCircle,
+  BsArrowRightShort,
+  BsFillArrowDownCircleFill,
+} from "react-icons/bs";
 import { GiChargedArrow } from "react-icons/gi";
 import { SiSuperuser } from "react-icons/si";
 import Head from "next/head";
@@ -12,6 +16,7 @@ import SideBar from "../components/SideBar";
 export default function Chat() {
   const [input, setInput] = useState("");
   const [type, setType] = useState("ISTJ");
+  const [hidden, setHidden] = useState(true);
   const [thinking, setThinking] = useState(false);
   const [chatLog, setChatLog] = useState([
     {
@@ -28,6 +33,7 @@ export default function Chat() {
   useEffect(() => {
     dummy.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatLog]);
+
   const dummy = useRef(null);
 
   // clear chats
@@ -74,6 +80,37 @@ export default function Chat() {
     setThinking(false);
   }
 
+  const observer = useRef(null);
+
+  useEffect(() => {
+    observer.current = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log("Dummy ref is within view");
+          setHidden(true);
+        } else {
+          console.log("Dummy ref is not within view");
+          setHidden(false);
+        }
+      });
+    });
+    if (dummy.current) {
+      observer.current.observe(dummy.current);
+    }
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
+  }, [dummy]);
+
+  const handleClick = () => {
+    dummy.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+    console.log("scrolling to bottom");
+  };
+
   return (
     <>
       <Head>
@@ -110,6 +147,7 @@ export default function Chat() {
           <BsPlusCircle onClick={clearChat} />
         </div>
       </header>
+
       <div className="flex bg-gray-500 text-white absolute top-14 lg:top-0 bottom-0 left-0 right-0">
         <SideBar type={type} setType={setType} />
         <div className="absolute top-0 right-0 m-4 text-4xl  bg-gray-600 rounded-full hover:bg-gray-900 hidden lg:block cursor-pointer text-black">
@@ -117,12 +155,22 @@ export default function Chat() {
         </div>
 
         <section className="flex-1 w-full overflow-y-auto  lg:pl-64 bg-gray-500 pb-64">
+          <div
+            className={`fixed bottom-20 right-8 text-gray-800 text-2xl z-20 ${
+              hidden ? "hidden" : "block"
+            }`}
+          >
+            <button className="hover:text-blue-400 cursor-pointer">
+              <BsFillArrowDownCircleFill onClick={handleClick} />
+            </button>
+          </div>
           <div className="text-left w-full">
             {chatLog.map((message, index) => (
               <ChatMessage message={message} key={index} dummy={dummy} />
             ))}
           </div>
           <div ref={dummy}></div>
+
           <div className=" fixed bottom-0 lg:left-72 left-0 right-0 pr-5 pl-3 ">
             <form onSubmit={handleSubmit}>
               <div className="relative bg-gray-800 rounded-lg mb-4 mt-12 shadow">
@@ -159,7 +207,7 @@ const ChatMessage = ({ message, dummy }) => {
         }`}
       >
         <div className="flex w-full lg:px-12 py-4  pl-2 pr-4 justify-between text-left items-start">
-          <div className="flex gap-2 items-start">
+          <div className="flex lg:gap-4 gap-2 items-start">
             <div className={`rounded-full w-9 h-9 shrink-0 items-start`}>
               {message.user === "gpt" ? (
                 <img
