@@ -18,6 +18,11 @@ export default function Chat() {
   const [type, setType] = useState("ISTJ");
   const [hidden, setHidden] = useState(true);
   const [thinking, setThinking] = useState(false);
+  const [thinkingChatLog, setThinkingChatLog] = useState([]);
+  const [lastMessageThinkingIndex, setLastMessageThinkingIndex] =
+    useState(null);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [lastMessageIndex, setLastMessageIndex] = useState(null);
   const [chatLog, setChatLog] = useState([
     {
       user: "gpt",
@@ -32,13 +37,15 @@ export default function Chat() {
   //scroll to bottom when new message is added
   useEffect(() => {
     dummy.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatLog]);
+  }, [chatLog, wordIndex]);
 
   const dummy = useRef(null);
 
   // clear chats
   function clearChat() {
     setChatLog([]);
+    setLastMessageIndex(null);
+    setLastMessageThinkingIndex(null);
   }
 
   async function handleSubmit(event) {
@@ -50,8 +57,24 @@ export default function Chat() {
     let chatLogNew = [];
     if (chatLog.length === 0) {
       chatLogNew = [{ user: "User", message: `${input}` }];
+      setThinkingChatLog([
+        { user: "User", message: `${input}` },
+        { user: "gpt", message: "" },
+      ]);
     } else {
       chatLogNew = [...chatLog, { user: "User", message: `${input}` }];
+      setThinkingChatLog([
+        ...chatLog,
+        { user: "User", message: `${input}` },
+        { user: "gpt", message: "" },
+      ]);
+      setLastMessageThinkingIndex(
+        [
+          ...chatLog,
+          { user: "User", message: `${input}` },
+          { user: "gpt", message: "" },
+        ].length
+      );
     }
 
     setInput("");
@@ -78,6 +101,8 @@ export default function Chat() {
     console.log(data.message);
     setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }]);
     setThinking(false);
+    setWordIndex(0);
+    setLastMessageIndex(chatLogNew.length);
   }
 
   const observer = useRef(null);
@@ -165,9 +190,29 @@ export default function Chat() {
             </button>
           </div>
           <div className="text-left w-full">
-            {chatLog.map((message, index) => (
-              <ChatMessage message={message} key={index} dummy={dummy} />
-            ))}
+            {thinking
+              ? thinkingChatLog.map((message, index) => (
+                  <ChatMessage
+                    message={message}
+                    key={index}
+                    wordIndex={wordIndex}
+                    last={index === lastMessageThinkingIndex - 1}
+                    setWordIndex={setWordIndex}
+                    thinkingChatLog={thinkingChatLog}
+                    thinking={thinking}
+                  />
+                ))
+              : chatLog.map((message, index) => (
+                  <ChatMessage
+                    message={message}
+                    key={index}
+                    wordIndex={wordIndex}
+                    last={index === lastMessageIndex}
+                    setWordIndex={setWordIndex}
+                    thinkingChatLog={thinkingChatLog}
+                    thinking={thinking}
+                  />
+                ))}
           </div>
           <div ref={dummy}></div>
 
@@ -175,7 +220,7 @@ export default function Chat() {
             <form onSubmit={handleSubmit}>
               <div className="relative bg-gray-800 rounded-lg mb-4 mt-12 shadow">
                 <input
-                  className="bg-gray-800 w-11/12  border-none rounded-lg outline-none shadow p-4 text-white text-xl"
+                  className="bg-gray-800 w-11/12 border-none rounded-lg outline-none shadow p-4 text-white text-xl"
                   rows="1"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -198,7 +243,24 @@ export default function Chat() {
   );
 }
 
-const ChatMessage = ({ message, dummy }) => {
+const ChatMessage = ({
+  message,
+  wordIndex,
+  setWordIndex,
+  last,
+  thinkingChatLog,
+  thinking,
+}) => {
+  const words = message.message.split(" ");
+
+  useEffect(() => {
+    if (wordIndex < words.length) {
+      setTimeout(() => {
+        setWordIndex((prev) => prev + 1);
+      }, 200);
+    }
+  }, [wordIndex, last]);
+
   return (
     <>
       <div
@@ -226,8 +288,12 @@ const ChatMessage = ({ message, dummy }) => {
                 // />
               )}
             </div>
-            <div className="text-lg text-left leading-loose text-gray-100">
-              {message.message}
+            <div className="text-lg text-left leading-loose text-gray-100 whitespace-pre-line">
+              {last
+                ? message.message.split(" ").slice(0, wordIndex).join(" ")
+                : message.message}
+              {thinking && last && <span className="blinking-cursor">|</span>}
+              {/* {`test message \n new line <b>bold<b>`-- if you want to render things like bold and italics and cold you can just parse this whole text as react markdown using the react-markdown library} */}
             </div>
           </div>
           {/* <AiFillAccountBook className="text-2xl shrink-0" /> */}
