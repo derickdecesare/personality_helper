@@ -256,10 +256,14 @@ const ChatMessage = ({
   const words = message.message.split(" ");
 
   useEffect(() => {
-    if (wordIndex < words.length) {
-      setTimeout(() => {
-        setWordIndex((prev) => prev + 1);
-      }, 200);
+    // only do this if the message is the last one
+
+    if (last) {
+      if (wordIndex < words.length) {
+        setTimeout(() => {
+          setWordIndex((prev) => prev + 1);
+        }, 200);
+      }
     }
   }, [wordIndex, last]);
 
