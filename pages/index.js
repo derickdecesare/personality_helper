@@ -107,7 +107,6 @@ export default function Chat() {
       setWordIndex(0);
       setLastMessageIndex(chatLogNew.length);
       if (data.error) {
-        setError(true);
         console.log("error", data.error);
       }
     } catch (error) {
@@ -228,12 +227,12 @@ export default function Chat() {
                     error={error}
                   />
                 ))}
-            {/* {error && (
+            {error && (
               <span className="text-red-500 justify-center align-middle flex mt-48">
-                Therer's an error going on with the request server. Try
-                refreshing the page and trying again.
+                There was an error with that request. Refresh the page and try
+                again.
               </span>
-            )} */}
+            )}
           </div>
           <div ref={dummy}></div>
 
