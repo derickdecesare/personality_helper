@@ -9,6 +9,7 @@ import {
 } from "react-icons/bs";
 import { GiChargedArrow } from "react-icons/gi";
 import { SiSuperuser } from "react-icons/si";
+import { MdAutorenew } from "react-icons/md";
 import Head from "next/head";
 
 import SideBar from "../components/SideBar";
@@ -169,15 +170,15 @@ export default function Chat() {
       </Head>
       <header className="bg-gray-900 fixed top-0 right-0 left-0 py-1 text-white z-10 lg:hidden flex flex-row align-middle justify-between">
         <HeaderTypeSelect type={type} setType={setType} />
-        <div className="m-2 text-4xl  bg-gray-600 rounded-full hover:bg-gray-900  cursor-pointer text-black">
-          <BsPlusCircle onClick={clearChat} />
+        <div className="m-2 text-4xl   rounded-full hover:bg-gray-600  cursor-pointer text-amber-50 opacity-80">
+          <MdAutorenew onClick={clearChat} />
         </div>
       </header>
 
       <div className="flex bg-gray-500 text-white absolute top-14 lg:top-0 bottom-0 left-0 right-0">
         <SideBar type={type} setType={setType} />
-        <div className="absolute top-0 right-0 m-4 text-4xl  bg-gray-600 rounded-full hover:bg-gray-900 hidden lg:block cursor-pointer text-black">
-          <BsPlusCircle onClick={clearChat} />
+        <div className="absolute top-0 right-0 m-4 text-4xl   rounded-full hover:bg-gray-900 hidden lg:block cursor-pointer text-amber-50 opacity-80">
+          <MdAutorenew onClick={clearChat} />
         </div>
 
         <section className="flex-1 w-full overflow-y-auto  lg:pl-64 bg-gray-500 pb-64">
