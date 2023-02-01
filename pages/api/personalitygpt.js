@@ -12,20 +12,29 @@ export default async function handler(req, res) {
 
   const { message, type } = req.body;
 
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `You are a helpful AI assistant named gpt that will act as a helpful and concerned partner to the user, so they can accomplish their goals and better understand their personality. They are a ${type}. Which is one of the 16 personality types from Myers Briggs. When they ask for advice, you can ask clarifying questions to better understand them and when you give answers ensure to frame it within the context of their personality. If you list anything please use new-line breaks with \n like this: 1. Example1 \n2. Example2 \n3. Example3 \n This is the conversation context:
+  try {
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `You are a helpful AI assistant named gpt that will act as a helpful and concerned partner to the user, so they can accomplish their goals and better understand their personality. They are a ${type}. Which is one of the 16 personality types from Myers Briggs. When they ask for advice, you can ask clarifying questions to better understand them and when you give answers ensure to frame it within the context of their personality. If you list anything please use new-line breaks with \n like this: 1. Example1 \n2. Example2 \n3. Example3 \n This is the conversation context:
     ${message}
     gtp:`,
-    max_tokens: 1500,
-    temperature: 0.5,
-    frequency_penalty: 0.5,
-  });
+      max_tokens: 1500,
+      temperature: 0.5,
+      frequency_penalty: 0.5,
+    });
 
-  console.log("Usage:", response.data.usage);
-  res.json({
-    message: response.data.choices[0].text,
-  });
+    console.log("Usage:", response.data.usage);
+    res.json({
+      message: response.data.choices[0].text,
+    });
+  } catch (error) {
+    console.error(error);
+    res.json({
+      message:
+        "There's an error with the API and it's not your fault. I'm still here, but I won't be able to help right now. Please try again later.",
+      error: error,
+    });
+  }
 }
 
 // working example to stream data from openai

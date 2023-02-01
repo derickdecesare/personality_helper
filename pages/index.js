@@ -18,6 +18,7 @@ export default function Chat() {
   const [input, setInput] = useState("");
   const [type, setType] = useState("ISTJ");
   const [hidden, setHidden] = useState(true);
+  const [error, setError] = useState(false);
   const [thinking, setThinking] = useState(false);
   const [thinkingChatLog, setThinkingChatLog] = useState([]);
   const [lastMessageThinkingIndex, setLastMessageThinkingIndex] =
@@ -88,23 +89,33 @@ export default function Chat() {
       .join("");
 
     console.log("chatlog to send to api==>", messages);
-
-    const response = await fetch("/api/personalitygpt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: messages,
-        type: type,
-      }),
-    });
-    const data = await response.json();
-    console.log(data.message);
-    setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }]);
-    setThinking(false);
-    setWordIndex(0);
-    setLastMessageIndex(chatLogNew.length);
+    try {
+      const response = await fetch("/api/personalitygpt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: messages,
+          type: type,
+        }),
+      });
+      const data = await response.json();
+      console.log(data.message);
+      setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }]);
+      setThinking(false);
+      setWordIndex(0);
+      setLastMessageIndex(chatLogNew.length);
+      if (data.error) {
+        setError(true);
+        console.log("error", data.error);
+      }
+    } catch (error) {
+      console.log(error);
+      setError(true);
+      setThinking(false);
+      clearChat();
+    }
   }
 
   const observer = useRef(null);
@@ -202,6 +213,7 @@ export default function Chat() {
                     setWordIndex={setWordIndex}
                     thinkingChatLog={thinkingChatLog}
                     thinking={thinking}
+                    error={error}
                   />
                 ))
               : chatLog.map((message, index) => (
@@ -213,8 +225,15 @@ export default function Chat() {
                     setWordIndex={setWordIndex}
                     thinkingChatLog={thinkingChatLog}
                     thinking={thinking}
+                    error={error}
                   />
                 ))}
+            {/* {error && (
+              <span className="text-red-500 justify-center align-middle flex mt-48">
+                Therer's an error going on with the request server. Try
+                refreshing the page and trying again.
+              </span>
+            )} */}
           </div>
           <div ref={dummy}></div>
 
@@ -252,6 +271,7 @@ const ChatMessage = ({
   last,
   thinkingChatLog,
   thinking,
+  error,
 }) => {
   const words = message.message.split(" ");
 
@@ -294,11 +314,12 @@ const ChatMessage = ({
                 // />
               )}
             </div>
-            <div className="text-lg text-left leading-loose text-gray-100 whitespace-pre-line">
+            <div className="text-lg text-left leading-loose  whitespace-pre-line text-gray-100">
               {last
                 ? message.message.split(" ").slice(0, wordIndex).join(" ")
                 : message.message}
               {thinking && last && <span className="blinking-cursor">|</span>}
+
               {/* {`test message \n new line <b>bold<b>`-- if you want to render things like bold and italics and cold you can just parse this whole text as react markdown using the react-markdown library} */}
             </div>
           </div>
