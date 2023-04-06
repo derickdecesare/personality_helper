@@ -48,7 +48,65 @@ export default function Chat() {
     setChatLog([]);
     setLastMessageIndex(null);
     setLastMessageThinkingIndex(null);
+    setThinking(false);
   }
+
+  const [newMessage, setNewMessage] = useState("");
+
+  async function consumeStream(response, chatLogNew) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let tempMessage = "";
+    let counter = 0;
+    let firstChunk = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        console.log("Stream complete");
+        setThinking(false);
+
+        break;
+      }
+
+      const chunk = decoder.decode(value);
+      console.log("Received chunk:", chunk);
+
+      // console.log("chatLog", chatLog);
+      console.log("chatLogNew", chatLogNew);
+
+      console.log("counter", counter);
+      // merge the new chunk with the existing text
+
+      if (counter === 0) {
+        firstChunk = chunk.replace(/^\n/, "");
+
+        tempMessage += firstChunk;
+      } else {
+        tempMessage += chunk;
+      }
+
+      console.log("tempMessage", tempMessage);
+
+      if (counter === 0) {
+        setChatLog([...chatLogNew, { user: "gpt", message: tempMessage }]);
+      } else {
+        setChatLog((prev) => [
+          ...prev.slice(0, -1),
+          { user: "gpt", message: tempMessage },
+        ]);
+      }
+
+      counter += 1;
+
+      // Process the chunk as needed (e.g., update your state, display in the UI, etc.)
+    }
+    setThinking(false);
+  }
+
+  // useEffect(() => {
+  //   console.log("chatlog useEffect", chatLog);
+  // }, [chatLog]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -100,21 +158,26 @@ export default function Chat() {
           type: type,
         }),
       });
-      const data = await response.json();
-      console.log(data.message);
-      setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }]);
-      setThinking(false);
-      setWordIndex(0);
-      setLastMessageIndex(chatLogNew.length);
-      if (data.error) {
-        console.log("error", data.error);
-      }
+
+      console.log("response", response);
+
+      // Consume the streamed data
+      await consumeStream(response, chatLogNew);
+
+      // const data = await response.json();
+      // console.log(data.message);
+      // setChatLog([...chatLogNew, { user: "gpt", message: `${data.message}` }]);
+      // setWordIndex(0);
+      // setLastMessageIndex(chatLogNew.length);
+      // if (data.error) {
+      //   console.log("error", data.error);
+      // }
     } catch (error) {
       console.log(error);
       setError(true);
-      setThinking(false);
       clearChat();
     }
+    setThinking(false);
   }
 
   const observer = useRef(null);
@@ -202,7 +265,7 @@ export default function Chat() {
             </button>
           </div>
           <div className="text-left w-full">
-            {thinking
+            {/* {thinking
               ? thinkingChatLog.map((message, index) => (
                   <ChatMessage
                     message={message}
@@ -215,18 +278,21 @@ export default function Chat() {
                     error={error}
                   />
                 ))
-              : chatLog.map((message, index) => (
-                  <ChatMessage
-                    message={message}
-                    key={index}
-                    wordIndex={wordIndex}
-                    last={index === lastMessageIndex}
-                    setWordIndex={setWordIndex}
-                    thinkingChatLog={thinkingChatLog}
-                    thinking={thinking}
-                    error={error}
-                  />
-                ))}
+              :  */}
+
+            {chatLog.map((message, index) => (
+              <ChatMessage
+                message={message}
+                key={index}
+                wordIndex={wordIndex}
+                last={index === lastMessageThinkingIndex - 1}
+                setWordIndex={setWordIndex}
+                thinkingChatLog={thinkingChatLog}
+                thinking={thinking}
+                error={error}
+              />
+            ))}
+
             {error && (
               <span className="text-red-500 justify-center align-middle flex mt-48">
                 There was an error with that request. Refresh the page and try
@@ -272,19 +338,19 @@ const ChatMessage = ({
   thinking,
   error,
 }) => {
-  const words = message.message.split(" ");
+  // const words = message.message.split(" ");
 
-  useEffect(() => {
-    // only do this if the message is the last one
+  // useEffect(() => {
+  //   // only do this if the message is the last one
 
-    if (last) {
-      if (wordIndex < words.length) {
-        setTimeout(() => {
-          setWordIndex((prev) => prev + 1);
-        }, 200);
-      }
-    }
-  }, [wordIndex, last]);
+  //   if (last) {
+  //     if (wordIndex < words.length) {
+  //       setTimeout(() => {
+  //         setWordIndex((prev) => prev + 1);
+  //       }, 200);
+  //     }
+  //   }
+  // }, [wordIndex, last]);
 
   return (
     <>
@@ -314,9 +380,7 @@ const ChatMessage = ({
               )}
             </div>
             <div className="text-lg text-left leading-loose  whitespace-pre-line text-gray-100">
-              {last
-                ? message.message.split(" ").slice(0, wordIndex).join(" ")
-                : message.message}
+              {message.message}
               {thinking && last && <span className="blinking-cursor">|</span>}
 
               {/* {`test message \n new line <b>bold<b>`-- if you want to render things like bold and italics and cold you can just parse this whole text as react markdown using the react-markdown library} */}
