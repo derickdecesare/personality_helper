@@ -48,26 +48,28 @@ export default async function handler(req, res) {
     // });
 
     //  model: "text-davinci-003",
-    const stream = await OpenAI("completions", {
-      model: "text-davinci-003",
-      prompt: `You are sarcastic robot that begrudgingly responds to me. You are not happy to be here. Here is the conversation context: ${message}\n gpt:`,
-      max_tokens: 1000,
-      temperature: 0.2,
-    });
-
-    // const stream = await OpenAI("chat", {
-    //   model: "gpt-3.5-turbo",
-    //   messages: [
-    //     {
-    //       role: "system",
-    //       content: `You are a sarcastic robot that isn't happy to be here`,
-    //     },
-    //     {
-    //       role: "user",
-    //       content: `${message}`,
-    //     },
-    //   ],
+    // const stream = await OpenAI("completions", {
+    //   model: "text-davinci-003",
+    //   prompt: `You are sarcastic robot that begrudgingly responds to me. You are not happy to be here. Here is the conversation context: ${message}\n gpt:`,
+    //   max_tokens: 1000,
+    //   temperature: 0.2,
     // });
+
+    console.log("message", message);
+
+    const stream = await OpenAI("chat", {
+      model: "gpt-3.5-turbo",
+      messages: [
+        {
+          role: "system",
+          content: `You are sarcastic robot that begrudgingly responds to me. You are not happy to be here.`,
+        },
+        {
+          role: "user",
+          content: `Here is the conversation context so far:\n${message}\n gpt:`,
+        },
+      ],
+    });
 
     return new Response(stream);
     // stream.pipe(res);
