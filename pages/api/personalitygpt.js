@@ -1,6 +1,10 @@
 import { Configuration, OpenAIApi } from "openai";
 import dotenv from "dotenv";
-import { OpenAI } from "openai-streams/node";
+import { OpenAI } from "openai-streams";
+
+export const config = {
+  runtime: "edge",
+};
 
 export default async function handler(req, res) {
   console.log("start chatgptclone.js");
@@ -11,7 +15,21 @@ export default async function handler(req, res) {
   // });
   // const openai = new OpenAIApi(configuration);
 
-  const { message, type } = req.body;
+  // Read the request body as a stream
+  const reader = req.body.getReader();
+  const decoder = new TextDecoder();
+  let requestBody = "";
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) {
+      break;
+    }
+
+    requestBody += decoder.decode(value);
+  }
+
+  const { message, type } = JSON.parse(requestBody);
 
   try {
     // const response = await openai.createCompletion({
@@ -51,7 +69,8 @@ export default async function handler(req, res) {
     //   ],
     // });
 
-    stream.pipe(res);
+    return new Response(stream);
+    // stream.pipe(res);
     // res.json({ stream });
   } catch (error) {
     console.error(error);

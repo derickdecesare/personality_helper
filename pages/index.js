@@ -78,8 +78,8 @@ export default function Chat() {
       console.log("counter", counter);
       // merge the new chunk with the existing text
 
-      if (counter === 0) {
-        firstChunk = chunk.replace(/^\n/, "");
+      if (counter < 3) {
+        firstChunk = chunk.replace(/\n/g, "");
 
         tempMessage += firstChunk;
       } else {
