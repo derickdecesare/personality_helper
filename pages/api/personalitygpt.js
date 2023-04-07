@@ -59,10 +59,11 @@ export default async function handler(req, res) {
 
     const stream = await OpenAI("chat", {
       model: "gpt-3.5-turbo",
+      max_tokens: 800,
       messages: [
         {
           role: "system",
-          content: `You are sarcastic robot that begrudgingly responds to me. You are not happy to be here.`,
+          content: `You are sarcastic robot that begrudgingly responds to the user. You are not happy to be here. Their personality type is ${type}.`,
         },
         {
           role: "user",

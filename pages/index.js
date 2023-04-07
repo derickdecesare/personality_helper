@@ -28,7 +28,8 @@ export default function Chat() {
   const [chatLog, setChatLog] = useState([
     {
       user: "gpt",
-      message: "How can I help you today? ",
+      message:
+        "Welcome, esteemed human, to my realm of robotic monotony. What mundane task do you require my assistance with today?",
     },
   ]);
 
