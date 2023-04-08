@@ -299,7 +299,7 @@ const ChatMessage = ({ message, last, thinking, error }) => {
                 />
               ) : (
                 <img
-                  className=" inline-block h-11 w-11 rounded-full object-cover shadow-md"
+                  className=" inline-block h-10 w-10 rounded-full object-cover shadow-md"
                   src="/ashly.png"
                   alt=""
                 />
